@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply — Join Our Team</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1a2e;
+      --ink-muted:  #5a5a7a;
+      --accent:     #4f46e5;
+      --accent-light: #eef2ff;
+      --accent-dark:  #3730a3;
+      --surface:    #ffffff;
+      --bg:         #f5f6ff;
+      --border:     #dde1f5;
+      --success:    #059669;
+      --error:      #dc2626;
+      --radius:     10px;
+      --shadow:     0 2px 16px rgba(79,70,229,0.08);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 40px 16px 80px;
+    }
+
+    .page-header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(26px, 5vw, 36px);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 36px 32px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .field-group {
+      margin-bottom: 20px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    label .required {
+      color: var(--accent);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+    }
+
+    input.error, select.error, textarea.error {
+      border-color: var(--error);
+    }
+
+    textarea { resize: vertical; min-height: 90px; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      background: var(--bg);
+    }
+
+    .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
+    .upload-area.dragover { border-color: var(--accent); background: var(--accent-light); }
+    .upload-area.has-file { border-color: var(--success); background: #f0fdf4; }
+
+    .upload-area input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+
+    .upload-icon {
+      width: 36px; height: 36px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .upload-icon svg { width: 18px; height: 18px; stroke: var(--accent); }
+
+    .upload-title {
+      font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px;
+    }
+
+    .upload-hint { font-size: 12px; color: var(--ink-muted); }
+
+    .file-name {
+      font-size: 13px; font-weight: 600; color: var(--success);
+      margin-top: 6px; display: none;
+    }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    .field-hint { font-size: 12px; color: var(--ink-muted); margin-top: 4px; }
+    .field-error { font-size: 12px; color: var(--error); margin-top: 4px; display: none; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover { background: var(--accent-dark); }
+    .submit-btn:active { transform: scale(.99); }
+    .submit-btn:disabled { background: var(--ink-muted); cursor: not-allowed; transform: none; }
+
+    .privacy {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* Success state */
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 20px 0 10px;
+    }
+
+    .success-icon {
+      width: 56px; height: 56px;
+      background: #dcfce7;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .success-icon svg { width: 28px; height: 28px; stroke: var(--success); }
+
+    .success-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .success-msg { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      margin-right: 8px; vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+
+    @media (max-width: 500px) {
+      .card { padding: 24px 18px; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <div class="badge">We're hiring</div>
+    <h1>Apply to join our team</h1>
+    <p class="subtitle">Fill in your details and upload your resume. Our AI hiring assistant will review your application and get back to you within 24 hours.</p>
+  </header>
+
+  <div class="card">
+
+    <!-- Success panel (shown after submit) -->
+    <div class="success-panel" id="successPanel">
+      <div class="success-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <p class="success-title">Application received!</p>
+      <p class="success-msg">Thanks for applying. Our team will review your resume and reach out to you at <strong id="confirmedEmail"></strong> within 24 hours.</p>
+    </div>
+
+    <!-- The form -->
+    <form id="applyForm" novalidate>
+
+      <p class="section-label">Personal details</p>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="firstName">First name <span class="required">*</span></label>
+          <input type="text" id="firstName" name="firstName" placeholder="Ravi" autocomplete="given-name"/>
+          <p class="field-error" id="firstNameErr">Please enter your first name.</p>
+        </div>
+        <div class="field-group">
+          <label for="lastName">Last name <span class="required">*</span></label>
+          <input type="text" id="lastName" name="lastName" placeholder="Sharma" autocomplete="family-name"/>
+          <p class="field-error" id="lastNameErr">Please enter your last name.</p>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="email">Email address <span class="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="ravi@example.com" autocomplete="email"/>
+        <p class="field-error" id="emailErr">Please enter a valid email address.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" autocomplete="tel"/>
+      </div>
+
+      <hr class="divider"/>
+      <p class="section-label">Role details</p>
+
+      <div class="field-group">
+        <label for="role">Position applying for <span class="required">*</span></label>
+        <select id="role" name="role">
+          <option value="" disabled selected>Select a role</option>
+          <option>Software Engineer</option>
+          <option>Product Manager</option>
+          <option>Data Analyst</option>
+          <option>UI / UX Designer</option>
+          <option>Marketing Manager</option>
+          <option>HR Executive</option>
+          <option>Other</option>
+        </select>
+        <p class="field-error" id="roleErr">Please select the role you are applying for.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="experience">Years of experience <span class="required">*</span></label>
+        <select id="experience" name="experience">
+          <option value="" disabled selected>Select experience</option>
+          <option>0 – 1 year (Fresher)</option>
+          <option>1 – 3 years</option>
+          <option>3 – 5 years</option>
+          <option>5 – 10 years</option>
+          <option>10+ years</option>
+        </select>
+        <p class="field-error" id="experienceErr">Please select your experience level.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="coverNote">Why do you want to join us? <span class="required">*</span></label>
+        <textarea id="coverNote" name="coverNote" placeholder="Tell us briefly what excites you about this role and what you'd bring to the team..."></textarea>
+        <p class="field-hint">2–4 sentences is plenty.</p>
+        <p class="field-error" id="coverNoteErr">Please add a short note.</p>
+      </div>
+
+      <hr class="divider"/>
+      <p class="section-label">Resume</p>
+
+      <div class="field-group">
+        <label>Upload resume <span class="required">*</span></label>
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="resumeFile" name="resume" accept=".pdf,.doc,.docx" aria-label="Upload resume"/>
+          <div class="upload-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <p class="upload-title">Click to upload or drag and drop</p>
+          <p class="upload-hint">PDF, DOC, or DOCX — max 5 MB</p>
+          <p class="file-name" id="fileName"></p>
+        </div>
+        <p class="field-error" id="resumeErr">Please upload your resume.</p>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit application</button>
+
+      <p class="privacy">Your information is handled securely and used only for recruitment purposes.</p>
+
+    </form>
+  </div>
+
+  <script>
+    const N8N_WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL_HERE';
+
+    const form = document.getElementById('applyForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successPanel = document.getElementById('successPanel');
+    const uploadArea = document.getElementById('uploadArea');
+    const resumeInput = document.getElementById('resumeFile');
+    const fileNameEl = document.getElementById('fileName');
+
+    resumeInput.addEventListener('change', () => {
+      const file = resumeInput.files[0];
+      if (file) {
+        fileNameEl.textContent = file.name;
+        fileNameEl.style.display = 'block';
+        uploadArea.classList.add('has-file');
+      }
+    });
+
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        resumeInput.files = e.dataTransfer.files;
+        resumeInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    function showError(inputId, errId, show) {
+      const el = document.getElementById(inputId);
+      const err = document.getElementById(errId);
+      if (show) { el.classList.add('error'); err.style.display = 'block'; }
+      else { el.classList.remove('error'); err.style.display = 'none'; }
+    }
+
+    function validate() {
+      let valid = true;
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const em = document.getElementById('email').value.trim();
+      const ro = document.getElementById('role').value;
+      const ex = document.getElementById('experience').value;
+      const cn = document.getElementById('coverNote').value.trim();
+      const rf = resumeInput.files[0];
+
+      showError('firstName',  'firstNameErr',  !fn);
+      showError('lastName',   'lastNameErr',   !ln);
+      showError('email',      'emailErr',      !em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em));
+      showError('role',       'roleErr',       !ro);
+      showError('experience', 'experienceErr', !ex);
+      showError('coverNote',  'coverNoteErr',  !cn);
+      showError('resumeFile', 'resumeErr',     !rf);
+
+      if (!fn || !ln || !em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) || !ro || !ex || !cn || !rf) valid = false;
+      return valid;
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      if (!validate()) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span>Submitting…';
+
+      const data = new FormData();
+      data.append('firstName',  document.getElementById('firstName').value.trim());
+      data.append('lastName',   document.getElementById('lastName').value.trim());
+      data.append('email',      document.getElementById('email').value.trim());
+      data.append('phone',      document.getElementById('phone').value.trim());
+      data.append('role',       document.getElementById('role').value);
+      data.append('experience', document.getElementById('experience').value);
+      data.append('coverNote',  document.getElementById('coverNote').value.trim());
+      data.append('resume',     resumeInput.files[0]);
+
+      try {
+        const res = await fetch(N8N_WEBHOOK_URL, { method: 'POST', body: data });
+        if (!res.ok) throw new Error('Server error');
+        document.getElementById('confirmedEmail').textContent = document.getElementById('email').value.trim();
+        form.style.display = 'none';
+        successPanel.style.display = 'block';
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit application';
+        alert('Something went wrong. Please try again or email us directly.');
+      }
+    });
+  </script>
+</body>
+</html>
