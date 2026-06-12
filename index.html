@@ -448,7 +448,10 @@
       data.append('resume',     resumeInput.files[0]);
 
       try {
-        const res = await fetch(N8N_WEBHOOK_URL, { method: 'POST', body: data });
+        const res = await fetch(N8N_WEBHOOK_URL, { method: 'POST', body: data,
+  headers: {
+    'ngrok-skip-browser-warning': 'true'
+  } });
         if (!res.ok) throw new Error('Server error');
         document.getElementById('confirmedEmail').textContent = document.getElementById('email').value.trim();
         form.style.display = 'none';
